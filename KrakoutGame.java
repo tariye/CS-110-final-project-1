@@ -35,6 +35,7 @@ public class KrakoutGame {
         square2.setColor(Color.RED);
         
         DrawingBoard line = new DrawingBoard(board);
+        line.moreBoard(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 - KrakoutBoard.BoardLength) *0.5,(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE + KrakoutBoard.BoardLength) *0.5);
         line.setLine(Color.BLACK,5.0);
         this.line = line;
         this.krakoutApp = krakoutApp;
@@ -55,8 +56,8 @@ public class KrakoutGame {
     void left() {
         
         System.out.println("left key was pressed!");
-        line.setLineStartX(line.getStartX()-5);
-        line.setLineEndX(line.getEndX()-5);
+        line.moreBoard(line.getStartX()-7,line.getEndX()-7);
+        
     }
 
     /**
@@ -64,7 +65,7 @@ public class KrakoutGame {
      */
     void right() {
         System.out.println("right key was pressed!");
-        line.setLineStartX(line.getEndX()+5);
+        line.moreBoard(line.getStartX()+7,line.getEndX()+7);
     }
     
 }
