@@ -20,7 +20,7 @@ public class KrakoutBoard extends Pane{
     // The number of squares that fit on the screen in the x and y dimensions
     public static final int X_DIM_SQUARES = 20;
     public static final int Y_DIM_SQUARES = 30;
-    public static final double BoardLength = 0.1;
+    public static final double BoardLength = 0.2;
 
 
     /**
