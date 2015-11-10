@@ -1,11 +1,7 @@
 import java.awt.Point;
-import java.awt.geom.Arc2D;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 /*
@@ -19,14 +15,17 @@ import javafx.scene.shape.Line;
  * @author Xuanyi Zhu
  */
 public class DrawingBoard{
-    private double LineStartX = KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 - KrakoutBoard.BoardLength) *0.5;
+    double LineStartX = KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 - KrakoutBoard.BoardLength) *0.5;
     private double LineY = KrakoutBoard.Y_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * 0.9;
     private double LineEndX = (KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE + KrakoutBoard.BoardLength) *0.5;
     private int PointX = (int) (KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * 0.5);
     private int PointY = KrakoutBoard.Y_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE;
+    
+    private DoubleProperty Start_x = new SimpleDoubleProperty();
+    private DoubleProperty End_x = new SimpleDoubleProperty();
 
 
-    private Line line = new Line(LineStartX,LineY,LineEndX,LineY);
+    private Line line = new Line(0,LineY,0,LineY);
     private Point point = new Point(PointX,PointY);
 
     private KrakoutBoard board;
@@ -34,9 +33,17 @@ public class DrawingBoard{
     public DrawingBoard(KrakoutBoard board) {
         this.board = board;
         this.board.getChildren().add(line);
-        line.startXProperty();
+        line.startXProperty().bind(Start_x);
+        line.endXProperty().bind(End_x);
     }
 
+    public void moreBoard(double a,double b){
+        Start_x.unbind();
+        End_x.unbind();
+        Start_x.set(a);
+        End_x.set(b);
+    }
+    
     
     public double getStartX() {
         return line.getStartX();
@@ -51,33 +58,5 @@ public class DrawingBoard{
         line.setStroke(color);
         line.setStrokeWidth(width);
     }    
-
-    /**
-     * @param LineStartX the LineStartX to set
-     */
-    public void setLineStartX(double LineStartX) {
-        LineStartX = this.LineStartX;
-    }
-
-    /**
-     * @param LineEndX the LineEndX to set
-     */
-    public void setLineEndX(double LineEndX) {
-        LineEndX = this.LineEndX;
-    }
-
-    /**
-     * @param PointX the PointX to set
-     */
-    public void setPointX(int PointX) {
-        this.PointX = PointX;
-    }
-
-    /**
-     * @param PointY the PointY to set
-     */
-    public void setPointY(int PointY) {
-        this.PointY = PointY;
-    }
 
 }
