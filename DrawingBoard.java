@@ -26,15 +26,19 @@ public class DrawingBoard{
 
 
     private Line line = new Line(0,LineY,0,LineY);
-    private Point point = new Point(PointX,PointY);
+    private Point point = new Point((int) ((LineStartX+LineEndX)*0.5),PointY);
 
     private KrakoutBoard board;
     
     public DrawingBoard(KrakoutBoard board) {
         this.board = board;
         this.board.getChildren().add(line);
+        
         line.startXProperty().bind(Start_x);
         line.endXProperty().bind(End_x);
+        
+        
+        
     }
 
     public void moreBoard(double a,double b){
