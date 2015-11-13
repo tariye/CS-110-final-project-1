@@ -14,9 +14,10 @@ import javafx.scene.paint.Color;
  * @author pipWolfe
  */
 public class KrakoutGame {
-    private Krakout krakoutApp;
+    private final Krakout krakoutApp;
     private final DrawingBoard line;
-
+    static boolean BallIsMove;
+    private final KrakoutBall ball;
     /**
      * Initialize the game. Remove the example code and replace with code
      * that creates a random piece.
@@ -26,18 +27,23 @@ public class KrakoutGame {
     public KrakoutGame(Krakout krakoutApp, KrakoutBoard board) {
         // Some sample code that places two squares on the board.
         // Take this out and construct your random piece here.
-        KrakoutSquare square1 = new KrakoutSquare(board);
-        square1.moveToKrakoutLocation(1, 1);
-        square1.setColor(Color.BLUEVIOLET);
-        
-        KrakoutSquare square2 = new KrakoutSquare(board);
-        square2.moveToKrakoutLocation(2, 3);
-        square2.setColor(Color.RED);
+//        KrakoutSquare square1 = new KrakoutSquare(board);
+//        square1.moveToKrakoutLocation(1, 1);
+//        square1.setColor(Color.BLUEVIOLET);
+//        
+//        KrakoutSquare square2 = new KrakoutSquare(board);
+//        square2.moveToKrakoutLocation(5, 3);
+//        square2.setColor(Color.RED);
         
         DrawingBoard line = new DrawingBoard(board);
-        line.moreBoard(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 - KrakoutBoard.BoardLength) *0.5,(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE + KrakoutBoard.BoardLength) *0.5);
+        line.moreBoard(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 - KrakoutBoard.BoardLength) *0.5,(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 + KrakoutBoard.BoardLength)) *0.5);
         line.setLine(Color.BLACK,5.0);
         this.line = line;
+        
+        KrakoutBall ball = new KrakoutBall(board, line);
+        ball.setBall(Color.BLACK, Color.WHITE);
+        this.ball = ball;
+        
         this.krakoutApp = krakoutApp;
         // You can use this to show the score, etc.
         krakoutApp.setMessage("Game has started!");
@@ -47,7 +53,9 @@ public class KrakoutGame {
      * Animate the game, by moving the current tetris piece down.
      */
     void update() {
-        //System.out.println("updating");
+        System.out.println("updating");
+        ball.moveBall();
+        
     }
     
     /**
@@ -56,7 +64,9 @@ public class KrakoutGame {
     void left() {
         
         System.out.println("left key was pressed!");
-        line.moreBoard(line.getStartX()-7,line.getEndX()-7);
+        if (line.getStartX()>7){
+            line.moreBoard(line.getStartX()-7,line.getEndX()-7);
+        }
         
     }
 
@@ -65,7 +75,17 @@ public class KrakoutGame {
      */
     void right() {
         System.out.println("right key was pressed!");
-        line.moreBoard(line.getStartX()+7,line.getEndX()+7);
+        if (line.getEndX()<(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE-7)){
+            line.moreBoard(line.getStartX()+7,line.getEndX()+7);
+        }
+        
     }
     
+    void space(){
+        System.out.println("space key was pressed!");
+        if (!BallIsMove){
+            ball.moveBall();
+            BallIsMove = true;
+        }
+    }
 }
