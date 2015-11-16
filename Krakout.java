@@ -23,7 +23,7 @@ import javafx.util.Duration;
  */
 public class Krakout extends Application {
 
-    private static final double MILLISEC = 200;
+    private static final double MILLISEC = 1;
     private KrakoutGame game;
     private KrakoutBoard krakoutBoard;
     private Timeline animation;
@@ -66,6 +66,8 @@ public class Krakout extends Application {
 
         setUpKeyPresses();
         
+        setUpBallMove();
+        
         primaryStage.setTitle("Krakout");
         
         primaryStage.setScene(scene);
@@ -89,6 +91,7 @@ public class Krakout extends Application {
         // Create a handler
         EventHandler<ActionEvent> eventHandler = (ActionEvent e) -> {
             this.pause();
+            //only update when the game is started <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             game.update();
             this.resume();
         };
@@ -102,6 +105,7 @@ public class Krakout extends Application {
      * Sets up key events for the arrow keys and space bar. All keys send 
      * messages to the game, which should react appropriately.
      */
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>fix delay<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     private void setUpKeyPresses() {
         krakoutBoard.setOnKeyPressed(e -> {
             switch (e.getCode()) {
@@ -110,6 +114,9 @@ public class Krakout extends Application {
                     break;
                 case RIGHT:
                     game.right();
+                    break;
+                case SPACE:
+                    game.space();
                     break;
                 
 
@@ -132,6 +139,10 @@ public class Krakout extends Application {
      */
     private void resume() {
         animation.play();
+    }
+
+    private void setUpBallMove() {
+        
     }
 
 }
