@@ -17,7 +17,7 @@ public class KrakoutGame {
     private final Krakout krakoutApp;
     private final DrawingBoard line;
     static boolean BallIsMove;
-    private final KrakoutBall ball;
+    private KrakoutBall ball;
     /**
      * Initialize the game. Remove the example code and replace with code
      * that creates a random piece.
@@ -36,9 +36,11 @@ public class KrakoutGame {
 //        square2.setColor(Color.RED);
         
         DrawingBoard line = new DrawingBoard(board);
-        line.moreBoard(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 - KrakoutBoard.BoardLength) *0.5,(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * (1 + KrakoutBoard.BoardLength)) *0.5);
         line.setLine(Color.BLACK,5.0);
         this.line = line;
+        
+
+//        helper.setBall(Color.BLACK, Color.WHITE);
         
         KrakoutBall ball = new KrakoutBall(board, line);
         ball.setBall(Color.BLACK, Color.WHITE);
@@ -53,9 +55,11 @@ public class KrakoutGame {
      * Animate the game, by moving the current tetris piece down.
      */
     void update() {
-        System.out.println("updating");
-        ball.moveBall();
+  
         
+        System.out.println("before  ball  X=" + ball.getCenterX()+"    Y="+ ball.getCenterY());
+       ball.moveBall(ball.updateVector().getX()+ball.getCenterX(),ball.updateVector().getY()+ball.getCenterY());
+        System.out.println("after  ball  X=" + ball.getCenterX()+"    Y="+ ball.getCenterY());
     }
     
     /**
@@ -82,10 +86,7 @@ public class KrakoutGame {
     }
     
     void space(){
-        System.out.println("space key was pressed!");
-        if (!BallIsMove){
-            ball.moveBall();
-            BallIsMove = true;
-        }
+        
+        
     }
 }
