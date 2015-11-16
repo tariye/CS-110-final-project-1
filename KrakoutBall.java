@@ -16,94 +16,112 @@ import javafx.scene.shape.Circle;
  */
 public class KrakoutBall {
 
-    private double CenterX = 0.0;
-    private double CenterY = 0.0;
+    private double CenterX;
+    private double CenterY;
+
+    // set the ball radius
     final int RADIUS = 10;
-    private DoubleProperty Center_x = new SimpleDoubleProperty();
-    private DoubleProperty Center_y = new SimpleDoubleProperty();
-    private final DrawingBoard line;
-    private Circle ball = new Circle(getCenterX(), getCenterY(), RADIUS);
+    private DoubleProperty Center_x = new SimpleDoubleProperty(KrakoutBoard.X_DIM_SQUARES * KrakoutBoard.SQUARE_SIZE * 0.5);
+    private DoubleProperty Center_y = new SimpleDoubleProperty(KrakoutBoard.Y_DIM_SQUARES * KrakoutBoard.SQUARE_SIZE * 0.9 - RADIUS);
+
+    //private draw the ball
+    private Circle ball = new Circle(KrakoutBoard.X_DIM_SQUARES * KrakoutBoard.SQUARE_SIZE * 0.5, KrakoutBoard.Y_DIM_SQUARES * KrakoutBoard.SQUARE_SIZE * 0.9 - RADIUS, RADIUS);
 
     private KrakoutBoard board;
-    Point2D target;
-    Point2D directionVectoer;
-    
+    private DrawingBoard line;
+
+    private double dx = 1, dy = 1;
+    Point2D directionVector;
 
     public KrakoutBall(KrakoutBoard board, DrawingBoard line) {
         this.board = board;
         this.board.getChildren().add(ball);
+
         this.line = line;
+
         ball.centerXProperty().bind(Center_x);
         ball.centerYProperty().bind(Center_y);
 
-    }
-
- 
-
-    
-    public void setBall() {
-        Center_x.unbind();
-        Center_y.unbind();
-        Center_x.set(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * 0.5);
-        Center_y.set(KrakoutBoard.Y_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * 0.9 - RADIUS);
     }
 
     /**
      * @return the CenterX
      */
     public double getCenterX() {
-        return CenterX;
+        return ball.getCenterX();
     }
 
     /**
      * @return the CenterY
      */
     public double getCenterY() {
-        return CenterY;
+        return ball.getCenterY();
     }
-    
-    void setBall(Color StrokeColor, Color FillColor){
+
+    /**
+     * set the ball's color
+     *
+     * @param StrokeColor
+     * @param FillColor
+     */
+    void setBall(Color StrokeColor, Color FillColor) {
         ball.setStroke(StrokeColor);
         ball.setFill(FillColor);
     }
 
-    public Point2D currentTarget(){
-        return target;
-    }
-    
-    public Point2D getTarget(){
-        if (KrakoutGame.BallIsMove == false){
-            return new Point2D(KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE * 0.5,0);
+//    public Point2D currentTarget(){
+//        return target;
+//    }
+//    //the ball is on the board. so it will go straight up
+//    public Point2D directionVector(){
+//        System.out.println("the ball starts moving");
+//        directionVector = new Point2D(0,-1).normalize();
+//        return directionVector;
+//    }
+    public Point2D updateVector() {
+
+        // if the ball touching the upper boundary, the direction vector will change
+        if (ball.getCenterY() <= RADIUS - 3) {
+            System.out.println("the ball is on top");
+            System.out.println("befor direction vec X=" + directionVector.normalize().getX()+"    Y="+ directionVector.normalize().getY());
+            directionVector = new Point2D(directionVector.getX(), 1+directionVector.getY());
+            System.out.println("after direction vec X=" + directionVector.normalize().getX()+"    Y="+ directionVector.normalize().getY());
+        }
+
+        // if the ball touching the left or right boundary, the direction vector will change
+        else if (ball.getCenterX() <= RADIUS - 3) {
+            System.out.println("the ball is on left or right");
+            directionVector = new Point2D(1+directionVector.getX(), directionVector.getY());
+
         }
         
-        else if (ball.getCenterY() - RADIUS == 0 || (line.getStartX() < ball.getCenterX() && ball.getCenterX() < line.getEndX())){
-            directionVectoer = new Point2D(-directionVectoer().getX(),directionVectoer().getY());
-            return directionVectoer;
+        else if (ball.getCenterX() + RADIUS +3 > KrakoutBoard.X_DIM_SQUARES * KrakoutBoard.SQUARE_SIZE){
+            System.out.println("the ball is on left or right");
+            directionVector = new Point2D(directionVector.getX()-1, directionVector.getY());
+        }
+
+        else if ((line.getStartX() < ball.getCenterX() && ball.getCenterX() < line.getEndX()) && ball.getCenterY() + RADIUS == line.getLineY() || (line.getStartX() < ball.getCenterX() && ball.getCenterX() < line.getEndX()) && ball.getCenterY() + RADIUS > line.getLineY()) {
+            System.out.println("the ball is on board!!!");
+            directionVector = new Point2D(getCenterX() - line.getLineMidX(), getCenterY() - KrakoutBoard.Y_DIM_SQUARES * KrakoutBoard.SQUARE_SIZE);
+
         }
         
-        else if (ball.getCenterX() - RADIUS == 0 || ball.getCenterX() + RADIUS == KrakoutBoard.X_DIM_SQUARES*KrakoutBoard.SQUARE_SIZE){
-            directionVectoer = new Point2D(directionVectoer().getX(),-directionVectoer().getY());
-            return directionVectoer;
-        }
-        
-        else {
-            return null;
-        }
-    }
-    
-    public Point2D directionVectoer(){
-        return getTarget().subtract(getBallLocation()).normalize();
+         
+
+        return directionVector.normalize();
+
     }
 
-    public Point2D getBallLocation(){
-        return new Point2D(ball.getCenterX(),ball.getCenterY());
+    public Point2D getBallLocation() {
+        return new Point2D(ball.getCenterX(), ball.getCenterY());
     }
+
     void moveBall(double a, double b) {
         Center_x.unbind();
         Center_y.unbind();
         Center_x.set(a);
         Center_y.set(b);
-    
+
     }
-    
+
 }
