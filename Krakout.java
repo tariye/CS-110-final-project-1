@@ -1,9 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Game like break breaker which the player smash a wall of bricks by deflecting 
+ * a bouncing ball with a paddle. The paddle moves horizontally and is controlled by
+ * the directional keys on the keyboard. The bricks are coming down.
  */
-
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,8 +17,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- * The Tetris Application, which contains the board and a message label.
- * @author pipWolfe
+ * The Krakout Application, which contains the board and a message label.
+ *
+ * @author Xuanyi Zhu
  */
 public class Krakout extends Application {
 
@@ -31,6 +31,7 @@ public class Krakout extends Application {
 
     /**
      * Launches the application.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -38,22 +39,22 @@ public class Krakout extends Application {
     }
 
     /**
-     * Sets up the tetris board and game, as well as a status label
-     * that can be used to display scores and messages.
-     * 
-     * Enables key events for the arrow keys and space bar, as well
-     * as an animation.
-     * 
+     * Sets up the krakout board and game, as well as a status label that can be
+     * used to display scores and messages.
+     *
+     * Enables key events for the arrow keys and space bar, as well as an
+     * animation.
+     *
      * @param primaryStage
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
         krakoutBoard = new KrakoutBoard();
-        
+
         statusLabel = new Label("Krakout");
         statusLabel.setTextFill(Color.RED);
-        
+
         BorderPane pane = new BorderPane();
         pane.setCenter(krakoutBoard);
         pane.setTop(statusLabel);
@@ -65,11 +66,9 @@ public class Krakout extends Application {
         setUpAnimation();
 
         setUpKeyPresses();
-        
-        setUpBallMove();
-        
+
         primaryStage.setTitle("Krakout");
-        
+
         primaryStage.setScene(scene);
 
         primaryStage.show();
@@ -77,7 +76,8 @@ public class Krakout extends Application {
 
     /**
      * Changes the message in the status label at the top of the screen.
-     * @param message 
+     *
+     * @param message
      */
     public void setMessage(String message) {
         statusLabel.setText(message);
@@ -91,10 +91,10 @@ public class Krakout extends Application {
         // Create a handler
         EventHandler<ActionEvent> eventHandler = (ActionEvent e) -> {
             this.pause();
-            //only update when the game is started <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             game.update();
             this.resume();
         };
+
         // Create an animation for alternating text
         animation = new Timeline(new KeyFrame(Duration.millis(MILLISEC), eventHandler));
         animation.setCycleCount(Timeline.INDEFINITE);
@@ -102,7 +102,7 @@ public class Krakout extends Application {
     }
 
     /**
-     * Sets up key events for the arrow keys and space bar. All keys send 
+     * Sets up key events for the arrow keys and space bar. All keys send
      * messages to the game, which should react appropriately.
      */
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>fix delay<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -115,11 +115,6 @@ public class Krakout extends Application {
                 case RIGHT:
                     game.right();
                     break;
-                case SPACE:
-                    game.space();
-                    break;
-                
-
 
             }
         });
@@ -134,15 +129,11 @@ public class Krakout extends Application {
         animation.pause();
     }
 
-    /** 
+    /**
      * Resumes the animation.
      */
     private void resume() {
         animation.play();
-    }
-
-    private void setUpBallMove() {
-        
     }
 
 }
