@@ -1,0 +1,105 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.shape.*;
+import javafx.util.Duration;
+
+/**
+ *
+ * @author Tariye Peter
+ */
+public class DrawingBoxes  {
+
+    
+    private final Rectangle rec[] = new Rectangle[85];
+  //  private final Pane pane = new Pane();
+    private final KrakoutBoard board;
+
+//    @Override // Override the start method in the Application class
+//    public void start(Stage primaryStage) {
+//
+//        //set background color 
+//        BackgroundFill BGF = new BackgroundFill(Color.BLACK, new CornerRadii(1),
+//                new Insets(0.0, 0.0, 0.0, 0.0));// or null for the padding
+//        pane.setBackground(new Background(BGF));
+//
+//        // Create a scene and place it in the stage
+//        Scene scene = new Scene(pane, 400, 500);
+//        primaryStage.setTitle("Boxes"); // Set the stage title
+//        primaryStage.setScene(scene); // Place the scene in the stage
+//        setUpAnimation();
+//        primaryStage.show(); // Display the stage
+//        createRec();
+//        moveRec();
+//    }
+
+  public DrawingBoxes(KrakoutBoard board) {
+        this.board = board;
+        this.board.getChildren().add(rec[]);
+    
+    public Rectangle createRec() {
+
+        int x, y;
+        x = 50;
+        y = 50;
+        for (int i = 0; i < rec.length; i++) {
+
+
+            // Create Color
+            int r = (int) (Math.random() * 255);
+            int g = (int) (Math.random() * 255);
+            int b = (int) (Math.random() * 255);
+            rec[i] = new Rectangle(x, y, 50, 50);
+            rec[i].setFill(Color.rgb(r, g, b, .99));
+
+            x += 50;
+            if (x == 350) {
+                y += 50;
+                x = -300;
+                
+            }
+
+            if (y >= 500) {
+                y = 500;
+            }
+
+           // pane.getChildren().add(rec[i]);
+
+        }
+    }
+
+    public void moveRec() {
+        for (int i = 0; i < rec.length; i++) {
+            rec[i].setX(rec[i].getX());
+            rec[i].setY(rec[i].getY() + 2);
+
+        }
+    }
+    void update() {
+        moveRec();
+    }
+
+//    public static void main(String[] args) {
+//        Application.launch(args);
+//    }
+
+}
