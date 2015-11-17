@@ -22,12 +22,12 @@ import javafx.scene.shape.Rectangle;
  */
 public class KrakoutSquare {
     // The shape for the square
-    private Rectangle shape = new Rectangle(0, 0, KrakoutBoard.SQUARE_SIZE, KrakoutBoard.SQUARE_SIZE);
+    private final Rectangle shape = new Rectangle(0, 0, KrakoutBoard.SQUARE_SIZE, KrakoutBoard.SQUARE_SIZE);
     // The x location in board coordinates
-    private IntegerProperty krakout_x = new SimpleIntegerProperty();
+    private final IntegerProperty krakout_x = new SimpleIntegerProperty();
     // The y location in board coordinates
-    private IntegerProperty krakout_y = new SimpleIntegerProperty();
-    private KrakoutBoard board;
+    private final IntegerProperty krakout_y = new SimpleIntegerProperty();
+    private final KrakoutBoard board;
     
     /**
      * Creates a square and draws it in the board. The shape for a square is 
@@ -115,5 +115,4 @@ public class KrakoutSquare {
     void removeFromDrawing() {
         board.getChildren().remove(shape);
     }
-
 }
